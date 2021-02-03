@@ -3,7 +3,6 @@ import os
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import date, datetime
 from events_app.models import Event, Guest
-
 # Import app and db from events_app package so that we can run app
 from events_app import app, db
 
@@ -72,20 +71,19 @@ def create():
         new_event_description = request.form.get('description')
         date = request.form.get('date')
         time = request.form.get('time')
-        
+        event_type = request.form.get('event_type')
+
         try:
             date_and_time = datetime.strptime(
                 f'{date} {time}',
                 '%m-%d-%Y %I:%M %p')
-            
-            
 
         except ValueError:
             print('there was an error: incorrect datetime format')
             flash('there was an error: incorrect datetime format')
             return render_template('create.html')
         
-        new_event = Event(title=new_event_title,description=new_event_description,date_and_time=date_and_time)
+        new_event = Event(title=new_event_title,description=new_event_description,date_and_time=date_and_time,event_type=event_type)
         db.session.add(new_event)
         db.session.commit()
         flash('Event created.')
@@ -100,5 +98,4 @@ def guest_detail(guest_id):
     context = {
         'guest':guest
     }
-    # TODO: Get the guest with the given id and send to the template
     return render_template('guest_detail.html',**context)
