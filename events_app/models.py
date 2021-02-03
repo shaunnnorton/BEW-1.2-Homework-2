@@ -4,18 +4,16 @@ from sqlalchemy.orm import backref
 import enum
 
 class Guest(db.Model):
+    """A Model for Guests"""
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(80), unique=True, nullable=False)
-    phone = db.Column(db.String(80), unique=True, nullable=False)
+    phone = db.Column(db.String(80), unique=True)
     events_attending = db.relationship('Event', secondary="guest_event_table" , back_populates="guests")
 
 
-
-
-# STRETCH CHALLENGE: Add a field `event_type` as an Enum column that denotes the
-# type of event (Party, Study, Networking, etc)
 class event_type(enum.Enum):
+    """All Posible Event Types"""
     PARTY = 1
     STUDY = 2
     NETWORKING = 3
@@ -24,6 +22,7 @@ class event_type(enum.Enum):
     GENERIC = 6
 
 class Event(db.Model):
+    """Model For Events"""
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), unique=True, nullable=False)
     description = db.Column(db.String(80))

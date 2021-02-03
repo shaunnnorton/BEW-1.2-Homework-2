@@ -41,11 +41,9 @@ def event_detail(event_id):
 @main.route('/event/<event_id>', methods=['POST'])
 def rsvp(event_id):
     """RSVP to an event."""
-    
     event = Event.query.filter_by(id=event_id).one()
     is_returning_guest = request.form.get('returning')
     guest_name = request.form.get('guest_name')
-
     if is_returning_guest:
         
         guest = Guest.query.filter_by(name=guest_name).one()
@@ -94,6 +92,7 @@ def create():
 
 @main.route('/guest/<guest_id>')
 def guest_detail(guest_id):
+    """Show a Guests details."""
     guest = Guest.query.filter_by(id=guest_id).one()
     context = {
         'guest':guest
